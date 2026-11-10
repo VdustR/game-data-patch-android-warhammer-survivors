@@ -105,7 +105,7 @@ The release contains exactly the HTML, Node script, license, asset attribution, 
 
 A new release remains a draft until uploaded files have been downloaded and their checksums verified. If an upload fails, rerun the Release workflow for the same verified main revision: it can resume that matching draft and replace its known generated artifacts. A published release is never overwritten; incomplete published releases and drafts from another revision stop with an error. Complete existing releases are downloaded and verified before reporting success.
 
-CI validates PRs, `codex/**` working branches, and main. Successful main CI triggers Pages and the Changesets workflow. Add a note with `pnpm changeset` for user-visible changes; the workflow creates a draft version PR and dispatches its CI. After review and merge, the next successful main CI publishes versioned HTML, Node script, notices, and SHA-256 checksums. No npm publication is configured.
+CI validates PRs, `codex/**` working branches, and main. Successful main CI triggers Pages and the Changesets workflow. Add a note with `pnpm changeset` for user-visible changes; the workflow creates a draft version PR. GitHub requires a repository writer to approve workflows for bot-created PRs: inspect the version diff, use **Approve workflows to run**, and wait for that revision’s CI to pass before merging. After review and merge, the next successful main CI publishes versioned HTML, Node script, notices, and SHA-256 checksums. No npm publication is configured.
 
 ## License and artwork
 
