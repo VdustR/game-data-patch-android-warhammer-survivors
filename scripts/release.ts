@@ -9,7 +9,7 @@ import {
   RELEASE_FILES,
   verifyArtifactChecksums,
 } from "./artifacts.ts";
-import { REPOSITORY, verifyCurrentMain } from "./verified-main.ts";
+import { githubJson, REPOSITORY, verifyCurrentMain } from "./verified-main.ts";
 
 const releaseSchema = z.object({
   tag_name: z.string(),
@@ -26,17 +26,33 @@ function gh(args: string[]) {
 }
 
 function findRelease(tag: string) {
-  // Pagination/network errors must never be interpreted as an absent release.
+  // Resolve pending draft tags the same way as gh release; collection reads can lag creation.
+  const query = `query($tag: String!) {
+    repository(owner: "VdustR", name: "game-data-patch-android-warhammer-survivors") {
+      release(tagName: $tag) { databaseId }
+    }
+  }`;
   const json: unknown = JSON.parse(
-    execFileSync("gh", ["api", "--paginate", `repos/${REPOSITORY}/releases`, "--slurp"], {
+    execFileSync("gh", ["api", "graphql", "-f", `query=${query}`, "-f", `tag=${tag}`], {
       encoding: "utf8",
     }),
   );
-  return z
-    .array(z.array(releaseSchema))
-    .parse(json)
-    .flat()
-    .find((release) => release.tag_name === tag);
+  // API and schema failures must not be mistaken for an absent release.
+  const lookup = z
+    .object({
+      data: z.object({
+        repository: z.object({
+          release: z.object({ databaseId: z.number().int().positive() }).nullable(),
+        }),
+      }),
+    })
+    .parse(json).data.repository.release;
+  if (!lookup) return undefined;
+  const release = releaseSchema.parse(
+    githubJson(`repos/${REPOSITORY}/releases/${lookup.databaseId}`),
+  );
+  if (release.tag_name !== tag) throw new Error("Release lookup returned a different tag.");
+  return release;
 }
 
 function requireComplete(release: z.infer<typeof releaseSchema>) {

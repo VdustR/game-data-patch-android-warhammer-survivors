@@ -18,6 +18,7 @@ export const hostStateSchema = z.object({
   apiError: z.boolean(),
   failUpload: z.boolean(),
   corruptDownload: z.boolean(),
+  lagDraftListing: z.boolean(),
   run: z
     .object({
       head_sha: z.string(),
@@ -54,8 +55,19 @@ if (import.meta.main) {
     else throw new Error("Unexpected git call");
   } else if (args[0] === "api") {
     if (state.apiError) process.exit(2);
-    if (args.includes("--slurp"))
-      console.log(JSON.stringify([state.release ? [state.release] : []]));
+    if (args[1] === "graphql")
+      console.log(
+        JSON.stringify({
+          data: { repository: { release: state.release ? { databaseId: 1 } : null } },
+        }),
+      );
+    else if (args[1]?.endsWith("/releases/1")) console.log(JSON.stringify(state.release));
+    else if (args.includes("--slurp"))
+      console.log(
+        JSON.stringify([
+          state.release && !(state.release.draft && state.lagDraftListing) ? [state.release] : [],
+        ]),
+      );
     else if (args[1]?.endsWith("/branches/main"))
       console.log(JSON.stringify({ commit: { sha: state.main } }));
     else if (args[1]?.includes("/actions/workflows/ci.yml/runs?"))
