@@ -9,4 +9,4 @@ An unofficial local utility for players to edit both Warhammer Survivors Android
 - Verified device build: Android 17, game 2.1.4, versionCode 178089, 2026-11-10. The save itself cannot establish versionCode.
 - Device-tested targets: 1 million and 1 billion for both worlds. The main menu displays 9,999,999 for billion balances; game-written saves and subsequent AoS upgrade purchases retained the larger value. Online cloud persistence is unverified.
 - Preserve unrelated bytes, game progress, original files, and existing outputs. No uploads, analytics, account access, or automatic phone writes.
-- Browser copy is Traditional Chinese; implementation documentation is English. The app icon and generated sharing artwork are attributed separately from MIT code. No proprietary binaries or private saves ship.
+- Browser copy is English; implementation documentation is English. The app icon and generated sharing artwork are attributed separately from MIT code. No proprietary binaries or private saves ship.

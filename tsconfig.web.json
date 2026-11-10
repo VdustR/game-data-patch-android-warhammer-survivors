@@ -9,5 +9,5 @@
     "checkJs": true,
     "tsBuildInfoFile": "node_modules/.cache/web.tsbuildinfo"
   },
-  "include": ["src/core.ts", "src/main.ts", "src/**/*.svelte", "reset.d.ts"]
+  "include": ["src/core.ts", "src/main.ts", "src/**/*.svelte", "reset.d.ts", "src/render.ts"]
 }

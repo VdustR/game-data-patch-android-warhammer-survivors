@@ -71,15 +71,15 @@ colors:
   coin-shade: "#987024"
 typography:
   display:
-    fontFamily: "PingFang TC, Noto Sans TC, system-ui, sans-serif"
+    fontFamily: "system-ui, sans-serif"
     fontSize: "clamp(34px, 4.3vw, 52px)"
     fontWeight: 800
-    lineHeight: 1.35
-    letterSpacing: "0.035em"
+    lineHeight: 1.2
+    letterSpacing: "-0.02em"
   display-compact:
     fontSize: "36px"
   display-mobile:
-    fontSize: "30px"
+    fontSize: "clamp(24px, 7vw, 30px)"
   headline:
     fontSize: "20px"
     letterSpacing: "0.025em"
@@ -88,7 +88,7 @@ typography:
   title:
     fontSize: "15px"
   body:
-    fontFamily: "PingFang TC, Noto Sans TC, system-ui, sans-serif"
+    fontFamily: "system-ui, sans-serif"
     fontSize: "16px"
     lineHeight: 1.65
   body-intro:
@@ -248,7 +248,7 @@ components:
 
 **Creative North Star: "Dual-realm supply forge"**
 
-Dark iron and stone surfaces, square brass edges, and crisp game pixels frame the save editor. The 40K world uses blue steel; Age of Sigmar uses ochre stone. Chinese instructions and numeric balances stay readable inside this game identity.
+Dark iron and stone surfaces, square brass edges, and crisp game pixels frame the save editor. The 40K world uses blue steel; Age of Sigmar uses ochre stone. English instructions and numeric balances stay readable inside this game identity.
 
 The visual system is extracted from [the stylesheet](src/style.css), [the editor](src/App.svelte), and [the local font import](src/main.ts). The [product constraints](PRODUCT.md) preserve local processing and recoverable copies. The [editor surface brief](.impeccable/surfaces/editor.md) owns the page composition and acceptance criteria. Frontmatter records current implementation values; role names for inline colors describe their existing use rather than a new CSS token API.
 
@@ -286,11 +286,11 @@ Warm brass and pale green sit against dark iron, with blue and ochre identifying
 
 ## Typography
 
-**The Readable Instructions Rule.** Chinese headings and instructions use the native sans stack in `body`. Press Start 2P belongs to short English labels and numbered steps. The Latin font is bundled locally through `@fontsource/press-start-2p`; it does not replace Chinese text.
+**The Readable Instructions Rule.** English headings and instructions use the native sans stack in `body`. Press Start 2P belongs to short English labels and numbered steps. The Latin font is bundled locally through `@fontsource/press-start-2p`. Keep long instructions in the readable sans stack.
 
 | Role                    | Frontmatter tokens                                                                                                       | Use                                                                                                                             |
 | ----------------------- | ------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------- |
-| Display                 | `display`, `display-compact`, `display-mobile`                                                                           | Main Chinese heading; fluid on wide screens, fixed sizes at the two breakpoints.                                                |
+| Display                 | `display`, `display-compact`, `display-mobile`                                                                           | Main English heading; fluid on wide screens and phones, with a compact intermediate size.                                       |
 | Section and note titles | `headline`, `headline-mobile`, `title`                                                                                   | Editor sections and supporting note headings. Heading weight follows native bold styling unless the display explicitly sets it. |
 | Body and guidance       | `body`, `body-intro`, `body-small`, `label`, `caption`                                                                   | Body copy, spacious introduction, form labels, status messages, hints, and verification details.                                |
 | Stable numbers          | `balance`, `input`                                                                                                       | Current balances and editable targets; both use `tabular-nums`.                                                                 |
@@ -308,13 +308,15 @@ The centered shell has a maximum width (1120px), including its horizontal paddin
 
 | Width             | Implemented behavior                                                                                                                                                                                                                                                                                                                                                                                                     |
 | ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| Above 760px       | Shell uses `shell-desktop`. Intro columns are `1fr 260px` with a (64px) gap and (54px 10px 46px) padding. Editor sections use `section-desktop`. World panels are equal columns with a (24px) gap. Supporting notes use `1fr 1.4fr` with a (60px) gap.                                                                                                                                                                   |
-| At or below 760px | Shell uses `shell-compact`; sections use `section-compact`. Intro becomes `1fr 170px`, with a (24px) gap and (38px 0) padding. World panels retain two columns, reduce their gap and padding, and use the compact pixel title. Notes reduce their gap to (30px). The forced introductory line break disappears.                                                                                                          |
-| At or below 560px | Shell uses `shell-mobile`; sections use `section-mobile`. Intro pairs the heading with a (94px) icon column; its paragraph and local-processing statement span both columns. The caption and supplemental section labels disappear. Worlds and supporting notes become one column. File and export rows stack, their main controls fill the available width, and presets wrap. World titles return to their normal size. |
+| Above 760px       | Shell uses `shell-desktop`. Intro columns are `minmax(0, 1fr) 260px` with a (64px) gap and (54px 10px 46px) padding. Editor sections use `section-desktop`. World panels are equal columns with a (24px) gap. Supporting notes use `1fr 1.4fr` with a (60px) gap.                                                                                                                                                        |
+| At or below 760px | Shell uses `shell-compact`; sections use `section-compact`. Intro becomes `1fr 170px`, with a (24px) gap and (38px 0) padding. World panels retain two columns, reduce their gap and padding, and use the compact pixel title. Notes reduce their gap to (30px).                                                                                                                                                         |
+| At or below 560px | Shell uses `shell-mobile`; sections use `section-mobile`. Intro pairs the heading with a (72px) icon column; its paragraph and local-processing statement span both columns. The caption and supplemental section labels disappear. Worlds and supporting notes become one column. File and export rows stack, their main controls fill the available width, and presets wrap. World titles return to their normal size. |
 
 The masthead reduces from a minimum height (105px) to (86px) at the phone breakpoint. Its icon reduces from (56px) to (44px). The primary action has a desktop minimum width (202px), removed when it fills the phone row. Form guidance is limited to (80ch). Numeric rows can wrap; filenames, errors, paths, and download labels use `overflow-wrap: anywhere`.
 
 **The Continuous Task Rule.** Keep file selection, both balances, generation, and recovery information in the same document flow. Responsive changes alter the columns without hiding controls or their feedback.
+
+The field guide follows the installation notes, with a plain definition list limited to 72ch. Its questions link to stable section IDs, and its text is present in the initial HTML. A JavaScript-disabled notice uses the existing warning colors; file selection remains disabled until hydration completes.
 
 ## Elevation & Depth
 
@@ -356,10 +358,10 @@ The download's `ready` animation changes its background from `download-ready` to
 ## Do's and Don'ts
 
 - **Do** preserve the existing app icon's crisp pixels and pair the two world colors with written labels.
-- **Do** use native sans for Chinese instructions and tabular monospace for balances.
+- **Do** use native sans for English instructions and tabular monospace for balances.
 - **Do** keep square material edges, visible focus, readable error messages, and filenames that wrap.
 - **Do** retain responsive access to both worlds, version consent, generation, and recovery guidance.
 - **Don't** substitute decorative faction insignia for the neutral coin and material motifs.
 - **Don't** add shadows, rounded card styling, or overlays that obscure the current flat material system.
-- **Don't** use pixel lettering for long Chinese instructions or rely on color alone for state.
+- **Don't** use pixel lettering for long English instructions or rely on color alone for state.
 - **Don't** add network-loaded design assets or present format recognition as device verification.

@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "dev": "vp dev --host 127.0.0.1",
-    "build": "vp build && node scripts/build.ts",
+    "build": "vp build && vp build --ssr src/render.ts --outDir node_modules/.cache/prerender && node scripts/build.ts",
     "preview": "vp preview --host 127.0.0.1",
     "check": "tsc -p tsconfig.node.json && svelte-check --tsconfig ./tsconfig.web.json --fail-on-warnings",
     "lint": "vp lint",

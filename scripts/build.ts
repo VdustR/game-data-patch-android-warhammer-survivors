@@ -1,6 +1,8 @@
 import { build } from "esbuild";
 import { copyFile, mkdir, readFile, writeFile } from "node:fs/promises";
-import { basename, join } from "node:path";
+import { basename, join, resolve } from "node:path";
+import { pathToFileURL } from "node:url";
+import { z } from "zod";
 import { inspectArtifacts } from "./artifacts.ts";
 
 await mkdir("release", { recursive: true });
@@ -21,6 +23,17 @@ await copyFile("docs/assets.md", "release/ASSETS.md");
 
 // Bundle the already-compiled Svelte app for direct file:// use, without an ESM fetch.
 let html = await readFile("dist/index.html", "utf8");
+const rendered: unknown = await import(
+  pathToFileURL(resolve("node_modules/.cache/prerender/render.js")).href
+);
+const { page } = z
+  .object({ page: z.object({ body: z.string().min(1), head: z.string() }) })
+  .parse(rendered);
+if (!html.includes("<!--app-html-->")) throw new Error("Missing prerender placeholder");
+html = html
+  .replace("<!--app-html-->", () => page.body)
+  .replace("</head>", () => `${page.head}</head>`);
+await writeFile("dist/index.html", html);
 const script = html.match(/<script\b[^>]*src="([^"]+)"[^>]*><\/script>/);
 const stylesheet = html.match(/<link\b[^>]*rel="stylesheet"[^>]*href="([^"]+)"[^>]*>/);
 if (!script?.[1] || !stylesheet?.[1]) throw new Error("Missing Vite script or stylesheet");
@@ -54,7 +67,7 @@ html = html
   )
   .replace(stylesheet[0], () => `<style>${css}</style>`)
   .replace(/<link\b[^>]*rel="modulepreload"[^>]*>/g, "")
-  .replaceAll('href="./app-icon.png"', `href="${icon}"`);
+  .replaceAll('="./app-icon.png"', `="${icon}"`);
 await writeFile(
   "release/warhammer-save-patcher.html",
   html + `\n<!--\n${notices.replaceAll("--", "- -")}\n-->\n`,

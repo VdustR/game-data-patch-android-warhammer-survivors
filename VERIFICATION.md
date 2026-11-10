@@ -28,3 +28,11 @@ The CLI reads at most the configured 5 MiB limit plus one byte from the validate
 The installation skill now stops the game before copying the current main and backup files. Two instruction scenarios were checked twice: a running game must stop before either copy, and a failed patch restores the preserved pair while the game is stopped. These are procedure checks; the audit did not repeat hardware or cloud-persistence testing.
 
 The first hosted 0.1.1 publication stopped safely after creating a draft because its immediate collection read did not confirm the expected draft. A same-revision retry completed publication. Release discovery now follows GitHub CLI’s pending-tag lookup: resolve the exact tag through GraphQL, then read the release by its stable ID. The test fixture models a missing collection entry; network/API failures still propagate rather than being interpreted as absence. The precise cause of the first collection response was not established.
+
+## English and search discovery
+
+On 2026-11-11, the interface, accessible labels, shared validation messages, and Node output were changed to English. The existing Svelte component is now rendered at build time and hydrated in the browser. A new regression failed the previous Chinese/client-only response and passes the English initial HTML, JavaScript-disabled guide, disabled file picker, canonical URL, factual WebApplication JSON-LD, and sitemap.
+
+The full suite now contains 19 core/CLI/release tests and 11 browser tests. Online and standalone offline downloads remain byte-identical to the shared core, with no patch-time network requests and no browser errors or hydration warnings. English screenshots at 320, 390, 768, and 1440px were reviewed; images load, controls remain reachable, and long-name/text-spacing cases do not overflow. This refinement preserves the existing pixel artwork and palette. The earlier axe result is historical, not a new audit of the added guide.
+
+These checks establish delivery and readable content, not search indexing, ranking, AI citations, or new device compatibility. The [search-discovery record](docs/search-discovery.md) lists the primary sources, implementation decisions, and remaining evidence limits.

@@ -1,6 +1,6 @@
 # Warhammer Survivors Android Save Patcher
 
-Edit 40K and Age of Sigmar coins in a **copy** of a local save. The pixel web interface and Node script share the same validation and checksum implementation. Files stay on your device; there is no upload, account, or backend.
+Edit 40K and Age of Sigmar coins in a **copy** of a local save. The English pixel web interface and Node script share the same validation and checksum implementation. Files stay on your device; there is no upload, account, or backend.
 
 **[Open the editor](https://vdustr.github.io/game-data-patch-android-warhammer-survivors/)** · **[Download standalone tools](https://github.com/VdustR/game-data-patch-android-warhammer-survivors/releases/latest)** · **[Agent usage skill](skills/warhammer-save-patch/SKILL.md)**
 
@@ -19,6 +19,8 @@ Edit 40K and Age of Sigmar coins in a **copy** of a local save. The pixel web in
 The game loaded both billion balances and retained them in its next written save. Both main menus displayed **9,999,999** for the stored billion. Subsequent AoS upgrade purchases reduced the stored value correctly. Online cloud persistence and a later full restart after that test remain unverified. The save exposes its game version, **not** its APK versionCode; the table records the tested installation.
 
 ## Browser
+
+The editor and its compatibility guide are prerendered for readers and search crawlers. See [search and AI discovery](docs/search-discovery.md) for the applied SEO/GEO choices and their limits.
 
 1. Open the [website](https://vdustr.github.io/game-data-patch-android-warhammer-survivors/), or download `warhammer-save-patcher.html` from [Releases](https://github.com/VdustR/game-data-patch-android-warhammer-survivors/releases/latest) and open it directly in a current browser.
 2. Select `SaveDataUnity.sav` or a backup. Review the detected version and current balances.

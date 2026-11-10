@@ -43,21 +43,21 @@ test("editing the inactive world leaves active root balance intact", async () =>
 });
 
 test("rejects corrupt checksums, duplicate keys and invalid values", async () => {
-  await assert.rejects(inspectSave(fixture().replace("810.7002", "900.0")), /校驗/);
+  await assert.rejects(inspectSave(fixture().replace("810.7002", "900.0")), /Checksum/);
   await assert.rejects(
     inspectSave(sign(fixture().replace('"Coins":0.0', '"Coins":0.0,"Coins":7.0'))),
-    /重複/,
+    /Duplicate/,
   );
   for (const value of [-1, 0.5, NaN, Infinity, 16_777_217, 1_000_000_001]) {
-    await assert.rejects(patchSave(fixture(), { WH_40K: value }), /金額/);
+    await assert.rejects(patchSave(fixture(), { WH_40K: value }), /Amounts/);
   }
-  await assert.rejects(patchSave(fixture(), {}), /指定/);
+  await assert.rejects(patchSave(fixture(), {}), /Specify/);
 });
 
 test("unknown versions warn and require explicit opt-in, unrelated fields remain flexible", async () => {
   const unknown = sign(fixture().replace("2.1.4", "9.9.9"));
   assert.equal((await inspectSave(unknown)).warnings.length, 1);
-  await assert.rejects(patchSave(unknown, { WH_40K: 42 }), /版本/);
+  await assert.rejects(patchSave(unknown, { WH_40K: 42 }), /version/);
   assert.equal(
     (await inspectSave(await patchSave(unknown, { WH_40K: 42 }, { allowUnverifiedVersion: true })))
       .balances.WH_40K,
