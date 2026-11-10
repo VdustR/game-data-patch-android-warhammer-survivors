@@ -1,0 +1,13 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "types": ["vite-plus/client"],
+    "allowJs": true,
+    "checkJs": true,
+    "tsBuildInfoFile": "node_modules/.cache/web.tsbuildinfo"
+  },
+  "include": ["src/core.ts", "src/main.ts", "src/**/*.svelte", "reset.d.ts"]
+}

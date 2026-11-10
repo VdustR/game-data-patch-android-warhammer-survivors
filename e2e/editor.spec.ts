@@ -1,0 +1,115 @@
+import { expect, test } from "@playwright/test";
+import { createHash } from "node:crypto";
+import { readFile } from "node:fs/promises";
+import { pathToFileURL } from "node:url";
+import { resolve } from "node:path";
+import { inspectSave, patchSave } from "../src/core.ts";
+
+function fixture(version = "2.1.4") {
+  const raw = `{"SaveGameVersion":"${version}","Platform":"Android","SelectedSiloType":"WH_40K","Coins":268.0,"checksum":"","SilosSaveData":{"WH_40K":{"Coins":268.0,"checksum":"nested"},"WH_AOS":{"Coins":810.0}},"PreserveMe":1.2300}`;
+  const hash = createHash("sha256")
+    .update(raw.replace(/"checksum":"[a-z0-9]*"/g, '"checksum":""'))
+    .digest("hex");
+  return raw.replace('"checksum":""', `"checksum":"${hash}"`);
+}
+
+for (const offline of [false, true]) {
+  test(`${offline ? "standalone offline" : "website"}: valid download, privacy, and stale output invalidation`, async ({
+    page,
+    context,
+  }) => {
+    const errors: string[] = [];
+    page.on("pageerror", (error) => errors.push(error.message));
+    const requests: string[] = [];
+    page.on("request", (request) => {
+      if (!request.url().startsWith("file:")) requests.push(request.url());
+    });
+    if (offline) await context.setOffline(true);
+    await page.goto(
+      offline ? pathToFileURL(resolve("release/warhammer-save-patcher.html")).href : "/",
+    );
+    await expect(page.getByRole("button", { name: "產生修改副本" })).toBeDisabled();
+    const source = fixture();
+    await page.getByRole("button", { name: "選擇存檔", exact: true }).setInputFiles({
+      name: "SaveDataUnity.sav",
+      mimeType: "application/octet-stream",
+      buffer: Buffer.from(source),
+    });
+    await expect(page.getByText("基本格式與校驗碼通過", { exact: false })).toBeVisible();
+    const beforePatch = requests.length;
+    await page.getByRole("button", { name: "10 億", exact: true }).click();
+    await page.getByRole("button", { name: "產生修改副本" }).click();
+    const link = page.getByRole("link", { name: "下載 SaveDataUnity.patched.sav" });
+    await expect(link).toBeFocused();
+    const pending = page.waitForEvent("download");
+    await link.click();
+    const downloaded = await pending;
+    const path = await downloaded.path();
+    if (!path) throw new Error("Missing download");
+    const actual = await readFile(path, "utf8");
+    expect(actual).toBe(await patchSave(source, { WH_40K: 1_000_000_000, WH_AOS: 1_000_000_000 }));
+    expect((await inspectSave(actual)).balances.WH_AOS).toBe(1_000_000_000);
+    await page.getByLabel("40K 金額").fill("1000");
+    await expect(link).toHaveCount(0);
+    expect(requests.length).toBe(beforePatch);
+    if (offline) expect(requests).toEqual([]);
+    expect(errors).toEqual([]);
+  });
+}
+
+test("wrong files, amount errors, unknown versions, and recovery", async ({ page }) => {
+  await page.goto("/");
+  const file = page.getByRole("button", { name: "選擇存檔", exact: true });
+  await file.setInputFiles({
+    name: "wrong-image.png",
+    mimeType: "image/png",
+    buffer: Buffer.from("not a save"),
+  });
+  await expect(page.getByRole("status", { name: "存檔檢查結果" })).toContainText("不是有效 JSON");
+  await expect(page.getByLabel("40K 金額")).toBeDisabled();
+  await file.setInputFiles({
+    name: "unknown.sav",
+    mimeType: "application/octet-stream",
+    buffer: Buffer.from(fixture("9.9.9")),
+  });
+  const generate = page.getByRole("button", { name: "產生修改副本" });
+  await expect(generate).toBeDisabled();
+  await page.getByRole("checkbox").check();
+  await page.getByLabel("40K 金額").fill("16777217");
+  await generate.click();
+  await expect(page.getByLabel("40K 金額")).toHaveAttribute("aria-invalid", "true");
+  await expect(page.getByRole("status", { name: "修改結果" })).toContainText("金額格式有誤");
+  await page.getByLabel("40K 金額").fill("0");
+  await expect(page.getByLabel("40K 金額")).not.toHaveAttribute("aria-invalid", "true");
+  await generate.click();
+  await expect(page.getByRole("link", { name: "下載 unknown.patched.sav" })).toBeVisible();
+  await file.setInputFiles({
+    name: "new.sav",
+    mimeType: "application/octet-stream",
+    buffer: Buffer.from(fixture("9.9.9")),
+  });
+  await expect(page.getByRole("checkbox")).not.toBeChecked();
+  await expect(page.getByRole("link", { name: /下載 .*patched/ })).toHaveCount(0);
+});
+
+for (const width of [320, 390, 768, 1440]) {
+  test(`layout at ${width}px with long filename and text spacing`, async ({ page }) => {
+    await page.setViewportSize({ width, height: 900 });
+    await page.goto("/");
+    await page.getByRole("button", { name: "選擇存檔", exact: true }).setInputFiles({
+      name: "long".repeat(40) + ".sav",
+      mimeType: "application/octet-stream",
+      buffer: Buffer.from(fixture()),
+    });
+    await page.addStyleTag({
+      content:
+        "* { letter-spacing: .12em !important; word-spacing: .16em !important; line-height: 1.5 !important; } p { margin-bottom: 2em !important; }",
+    });
+    const size = await page.evaluate(() => ({
+      scroll: document.documentElement.scrollWidth,
+      viewport: innerWidth,
+    }));
+    expect(size.scroll).toBeLessThanOrEqual(size.viewport);
+    await expect(page.getByRole("button", { name: "產生修改副本" })).toBeEnabled();
+  });
+}
