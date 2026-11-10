@@ -1,0 +1,54 @@
+{
+  "name": "game-data-patch-android-warhammer-survivors",
+  "version": "0.0.0",
+  "private": true,
+  "license": "MIT",
+  "type": "module",
+  "scripts": {
+    "dev": "vp dev --host 127.0.0.1",
+    "build": "vp build && node scripts/build.ts",
+    "preview": "vp preview --host 127.0.0.1",
+    "check": "tsc -p tsconfig.node.json && svelte-check --tsconfig ./tsconfig.web.json --fail-on-warnings",
+    "lint": "vp lint",
+    "format": "vp fmt && prettier --write 'src/**/*.svelte'",
+    "format:check": "vp fmt --check && prettier --check 'src/**/*.svelte'",
+    "test": "vp test run",
+    "test:browser": "playwright test",
+    "verify": "pnpm format:check && pnpm lint && pnpm check && pnpm build && pnpm test && pnpm test:browser",
+    "patch": "node src/cli.ts",
+    "changeset": "changeset",
+    "version-packages": "changeset version && pnpm install --lockfile-only --ignore-scripts && pnpm format",
+    "release": "node scripts/release.ts",
+    "prepare": "husky"
+  },
+  "dependencies": {
+    "jsonc-parser": "3.3.1",
+    "svelte": "5.57.3",
+    "zod": "4.6.7"
+  },
+  "devDependencies": {
+    "@changesets/cli": "3.0.3",
+    "@fontsource/press-start-2p": "5.3.0",
+    "@playwright/test": "1.65.0",
+    "@sveltejs/vite-plugin-svelte": "7.3.1",
+    "@total-typescript/ts-reset": "0.6.1",
+    "@tsconfig/strictest": "2.0.8",
+    "@types/node": "26.6.6",
+    "esbuild": "0.28.2",
+    "husky": "9.1.7",
+    "lint-staged": "17.6.0",
+    "prettier": "3.9.10",
+    "prettier-plugin-svelte": "4.1.1",
+    "svelte-check": "4.7.8",
+    "typescript": "6.0.3",
+    "vite-plus": "1.5.1"
+  },
+  "lint-staged": {
+    "*.{ts,css,json,md,yml,yaml,html}": "vp fmt",
+    "*.svelte": "prettier --write"
+  },
+  "engines": {
+    "node": ">=26.0.0"
+  },
+  "packageManager": "pnpm@11.25.0"
+}
