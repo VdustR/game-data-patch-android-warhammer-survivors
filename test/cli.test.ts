@@ -4,6 +4,7 @@ import { execFileSync, spawnSync } from "node:child_process";
 import { mkdtemp, readFile, rm, writeFile, symlink, link } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
+import { fileURLToPath } from "node:url";
 import { test } from "vite-plus/test";
 import { inspectSave } from "../src/core.ts";
 
@@ -18,7 +19,7 @@ test("CLI preserves originals and existing outputs, including aliases", async ()
       '"checksum":"' + createHash("sha256").update(unsigned).digest("hex") + '"',
     );
     await writeFile(input, original);
-    const cli = new URL("../dist/patch-save.mjs", import.meta.url).pathname;
+    const cli = fileURLToPath(new URL("../dist/patch-save.mjs", import.meta.url));
     const invoke = (args: string[]) =>
       spawnSync(process.execPath, [cli, input, ...args], { encoding: "utf8" });
     assert.equal(invoke(["--40k", "1000000", "--aos", "1000000"]).status, 0);
@@ -46,3 +47,25 @@ test("CLI preserves originals and existing outputs, including aliases", async ()
     await rm(folder, { recursive: true, force: true });
   }
 });
+
+test(
+  "CLI rejects a FIFO without waiting for a writer",
+  { skip: process.platform === "win32" },
+  async () => {
+    const folder = await mkdtemp(join(tmpdir(), "warhammer-fifo-test-"));
+    try {
+      const input = join(folder, "wrong.sav");
+      execFileSync("mkfifo", [input]);
+      const result = spawnSync(
+        process.execPath,
+        [fileURLToPath(new URL("../src/cli.ts", import.meta.url)), input, "--inspect"],
+        { encoding: "utf8", timeout: 3000 },
+      );
+      assert.equal(result.error, undefined);
+      assert.equal(result.status, 1);
+      assert.match(result.stderr, /一般存檔/);
+    } finally {
+      await rm(folder, { recursive: true, force: true });
+    }
+  },
+);

@@ -305,6 +305,7 @@
               <label
                 ><input
                   type="checkbox"
+                  disabled={busy}
                   bind:checked={accepted}
                   onchange={invalidate}
                 />我了解此版本尚未實機驗證，仍要產生副本</label

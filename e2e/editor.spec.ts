@@ -5,6 +5,12 @@ import { pathToFileURL } from "node:url";
 import { resolve } from "node:path";
 import { inspectSave, patchSave } from "../src/core.ts";
 
+declare global {
+  interface Window {
+    resumeAuditDigest: () => void;
+  }
+}
+
 function fixture(version = "2.1.4") {
   const raw = `{"SaveGameVersion":"${version}","Platform":"Android","SelectedSiloType":"WH_40K","Coins":268.0,"checksum":"","SilosSaveData":{"WH_40K":{"Coins":268.0,"checksum":"nested"},"WH_AOS":{"Coins":810.0}},"PreserveMe":1.2300}`;
   const hash = createHash("sha256")
@@ -90,6 +96,81 @@ test("wrong files, amount errors, unknown versions, and recovery", async ({ page
   });
   await expect(page.getByRole("checkbox")).not.toBeChecked();
   await expect(page.getByRole("link", { name: /下載 .*patched/ })).toHaveCount(0);
+});
+
+test("version consent cannot invalidate an in-flight patch", async ({ page }) => {
+  await page.goto("/");
+  await page.getByRole("button", { name: "選擇存檔", exact: true }).setInputFiles({
+    name: "unknown.sav",
+    mimeType: "application/octet-stream",
+    buffer: Buffer.from(fixture("9.9.9")),
+  });
+  const consent = page.getByRole("checkbox");
+  await consent.check();
+  await page.getByLabel("40K 金額").fill("1000");
+  await page.evaluate(() => {
+    const original = crypto.subtle.digest.bind(crypto.subtle);
+    const gate = new Promise<void>((resolve) => {
+      window.resumeAuditDigest = resolve;
+    });
+    crypto.subtle.digest = async (...args) => {
+      await gate;
+      return original(...args);
+    };
+  });
+  await page.getByRole("button", { name: "產生修改副本" }).click();
+  await expect(consent).toBeDisabled();
+  await page.evaluate(() => window.resumeAuditDigest());
+  await expect(page.getByRole("link", { name: "下載 unknown.patched.sav" })).toBeVisible();
+  await expect(consent).toBeEnabled();
+  await consent.uncheck();
+  await expect(page.getByRole("link", { name: "下載 unknown.patched.sav" })).toHaveCount(0);
+  await expect(page.getByRole("button", { name: "選擇存檔", exact: true })).toBeEnabled();
+});
+
+test("digest failure restores controls and allows retry", async ({ page }) => {
+  await page.goto("/");
+  await page.getByRole("button", { name: "選擇存檔", exact: true }).setInputFiles({
+    name: "retry.sav",
+    mimeType: "application/octet-stream",
+    buffer: Buffer.from(fixture("9.9.9")),
+  });
+  await page.getByRole("checkbox").check();
+  await page.getByLabel("40K 金額").fill("1000");
+  await page.evaluate(() => {
+    const original = crypto.subtle.digest.bind(crypto.subtle);
+    let fail = true;
+    crypto.subtle.digest = (...args) => {
+      if (fail) {
+        fail = false;
+        return Promise.reject(new Error("Test digest failure"));
+      }
+      return original(...args);
+    };
+  });
+  const generate = page.getByRole("button", { name: "產生修改副本" });
+  await generate.click();
+  await expect(page.getByRole("status", { name: "修改結果" })).toContainText("Test digest failure");
+  await expect(page.getByRole("checkbox")).toBeEnabled();
+  await expect(generate).toBeEnabled();
+  await generate.click();
+  await expect(page.getByRole("link", { name: "下載 retry.patched.sav" })).toBeVisible();
+});
+
+test("disabled JavaScript explains the requirement and offers the Node tool", async ({
+  browser,
+}) => {
+  const context = await browser.newContext({ javaScriptEnabled: false });
+  try {
+    const page = await context.newPage();
+    await page.goto(process.env["TEST_BASE_URL"] ?? "http://127.0.0.1:4173");
+    // Playwright's text engine excludes noscript; inspect its rendered descendants directly.
+    await expect(page.locator("noscript h1")).toBeVisible();
+    await expect(page.locator("noscript h1")).toHaveText("需要啟用 JavaScript");
+    await expect(page.locator("noscript a")).toHaveAttribute("href", /releases\/latest$/);
+  } finally {
+    await context.close();
+  }
 });
 
 for (const width of [320, 390, 768, 1440]) {

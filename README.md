@@ -99,6 +99,12 @@ portless warhammer-save pnpm preview
 
 ## CI and releases
 
+Pages and release preparation require successful push CI for the exact current `main` revision, including manual workflow dispatch. An old CI completion skips publication instead of restoring an older site. Publication also requires a clean checkout and refuses a conflicting remote tag.
+
+The release contains exactly the HTML, Node script, license, asset attribution, third-party notices, and `SHA256SUMS.txt`. Builds and publication reject unexpected files or links in `release/`; move those files to a separate location before retrying. They are never silently deleted or uploaded.
+
+A new release remains a draft until uploaded files have been downloaded and their checksums verified. If an upload fails, rerun the Release workflow for the same verified main revision: it can resume that matching draft and replace its known generated artifacts. A published release is never overwritten; incomplete published releases and drafts from another revision stop with an error. Complete existing releases are downloaded and verified before reporting success.
+
 CI validates PRs, `codex/**` working branches, and main. Successful main CI triggers Pages and the Changesets workflow. Add a note with `pnpm changeset` for user-visible changes; the workflow creates a draft version PR and dispatches its CI. After review and merge, the next successful main CI publishes versioned HTML, Node script, notices, and SHA-256 checksums. No npm publication is configured.
 
 ## License and artwork
