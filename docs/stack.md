@@ -33,6 +33,8 @@ No remote data means no TanStack Query or API contract layer; no cross-route sta
 
 Generated `**/CHANGELOG.md` files are excluded from formatting, linting, and staged tasks, including explicit formatter file arguments. Authored `.changeset/*.md` notes remain checked.
 
-CI validates each pull request and main revision. A successful main CI run starts Pages deployment and release preparation. Changesets opens a draft version PR and dispatches CI for its branch because a PR created with `GITHUB_TOKEN` does not itself trigger another workflow. A maintainer reviews and merges the version PR after checks pass. The next successful main CI publishes versioned standalone files and checksums. Existing releases are left unchanged.
+CI validates each pull request and main revision. A successful main CI run starts Pages deployment and release preparation. Changesets opens a draft version PR and dispatches CI for its branch because a PR created with `GITHUB_TOKEN` does not itself trigger another workflow. A maintainer reviews and merges the version PR after checks pass. The next successful main CI publishes versioned standalone files and checksums. Before mutation, the source gate checks that the candidate is still the current remote main and that its exact revision has a successful completed push CI run. Stale automatic runs skip; manual runs fail visibly.
+
+Publication uses an explicit artifact manifest. New releases remain drafts until uploaded files are downloaded and their checksums match the build. An interrupted matching draft can be retried; published releases are verified without overwriting assets. Unexpected release-directory files are rejected and retained for inspection.
 
 The repository must enable GitHub Actions PR creation and use the Pages workflow source. No secret beyond the scoped built-in `GITHUB_TOKEN` is needed. Local browser review uses Portless; CI uses an isolated fixed preview port because Portless is not installed in the runner.

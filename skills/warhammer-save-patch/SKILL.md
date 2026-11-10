@@ -29,7 +29,7 @@ Open the published site or `release/warhammer-save-patcher.html`. Select the sav
 
 ## Authorized phone installation
 
-Only operate a phone when the user requested device installation. Obtain the current main and native backup first; verify local copies before overwriting the remote main. Stop the game, install the candidate under the exact `SaveDataUnity.sav` name, then inspect the game's next written save. The UI can display 9,999,999 for a stored billion.
+Only operate a phone when the user requested device installation. Stop the game before copying its current main and native backup; verify both local copies, then patch that current main copy. Install the candidate under the exact `SaveDataUnity.sav` name, start the game, and inspect the game's next written save. The UI can display 9,999,999 for a stored billion.
 
 A cloud-conflict row must be identified from observed content and its selection mark. Never assume the upper/lower row is local or trust a timestamp alone. If the test fails, stop the game and restore the saved original main and backup, verify hashes, and restore temporary network settings. Do not clear Google Play data or delete backups as a default repair.
 

@@ -1,6 +1,7 @@
 import { build } from "esbuild";
 import { copyFile, mkdir, readFile, writeFile } from "node:fs/promises";
 import { basename, join } from "node:path";
+import { inspectArtifacts } from "./artifacts.ts";
 
 await mkdir("release", { recursive: true });
 const notices = (
@@ -69,4 +70,5 @@ await build({
   banner: { js: `#!/usr/bin/env node\n/*\n${notices.replaceAll("*/", "* /")}\n*/` },
 });
 await copyFile("dist/patch-save.mjs", "release/patch-save.mjs");
+await inspectArtifacts("release");
 console.log("Built website, standalone offline HTML, and bundled Node script.");

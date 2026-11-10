@@ -1,4 +1,5 @@
 import { open, rm } from "node:fs/promises";
+import { constants } from "node:fs";
 import { basename, dirname, join, resolve } from "node:path";
 import { parseArgs } from "node:util";
 import {
@@ -33,13 +34,22 @@ async function main() {
   const [input] = positionals;
   if (!input || positionals.length !== 1)
     throw new Error("請提供一個存檔路徑；使用 --help 查看用法。");
-  const source = await open(input, "r");
+  // A FIFO must not wait for a writer before we can reject it as a non-file.
+  const source = await open(input, constants.O_RDONLY | constants.O_NONBLOCK);
   let text: string;
   try {
     const info = await source.stat();
     if (!info.isFile() || info.size > MAX_FILE_BYTES)
       throw new Error("請選擇不超過 5 MiB 的一般存檔檔案。");
-    text = decodeSave(await source.readFile());
+    // Enforce the cap on the handle too: the file can grow after stat().
+    const bytes = Buffer.alloc(MAX_FILE_BYTES + 1);
+    let length = 0;
+    while (length < bytes.length) {
+      const { bytesRead } = await source.read(bytes, length, bytes.length - length, null);
+      if (bytesRead === 0) break;
+      length += bytesRead;
+    }
+    text = decodeSave(bytes.subarray(0, length));
   } finally {
     await source.close();
   }
