@@ -27,13 +27,14 @@ No remote data means no TanStack Query or API contract layer; no cross-route sta
 - [svelte-check package metadata](https://www.npmjs.com/package/svelte-check)
 - [Changesets automation](https://changesets.dev/guide/automating)
 - [Changesets action 2.1.2](https://github.com/changesets/action/tree/v2.1.2)
+- [GitHub token workflow triggers and bot PR approval](https://docs.github.com/en/actions/concepts/security/github_token)
 - [GitHub Pages custom workflows](https://docs.github.com/en/pages/getting-started-with-github-pages/using-custom-workflows-with-github-pages)
 
 ## Release order
 
 Generated `**/CHANGELOG.md` files are excluded from formatting, linting, and staged tasks, including explicit formatter file arguments. Authored `.changeset/*.md` notes remain checked.
 
-CI validates each pull request and main revision. A successful main CI run starts Pages deployment and release preparation. Changesets opens a draft version PR and dispatches CI for its branch because a PR created with `GITHUB_TOKEN` does not itself trigger another workflow. A maintainer reviews and merges the version PR after checks pass. The next successful main CI publishes versioned standalone files and checksums. Before mutation, the source gate checks that the candidate is still the current remote main and that its exact revision has a successful completed push CI run. Stale automatic runs skip; manual runs fail visibly.
+CI validates each pull request and main revision. A successful main CI run starts Pages deployment and release preparation. Changesets opens a draft version PR. A `GITHUB_TOKEN`-created PR starts CI in an approval-required state. A repository writer inspects the generated diff and approves the workflow through GitHub; there is no automatic dispatch around that approval. Merge only after the approved current-revision checks pass. The next successful main CI publishes versioned standalone files and checksums. Before mutation, the source gate checks that the candidate is still the current remote main and that its exact revision has a successful completed push CI run. Stale automatic runs skip; manual runs fail visibly.
 
 Publication uses an explicit artifact manifest. New releases remain drafts until uploaded files are downloaded and their checksums match the build. An interrupted matching draft can be retried; published releases are verified without overwriting assets. Unexpected release-directory files are rejected and retained for inspection.
 
