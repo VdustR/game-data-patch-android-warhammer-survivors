@@ -6,10 +6,12 @@ test("initial HTML exposes the English tool, evidence, and discovery metadata wi
   browser,
   request,
 }) => {
-  const response = await request.get("/");
+  const response = await request.get("./");
   expect(response.ok()).toBe(true);
   const html = await response.text();
   expect(html).toContain('lang="en"');
+  expect(html).toContain('id="compatibility"');
+  expect(html).toContain('id="save-privacy"');
   const context = await browser.newContext({ javaScriptEnabled: false });
   try {
     const page = await context.newPage();
@@ -33,7 +35,7 @@ test("initial HTML exposes the English tool, evidence, and discovery metadata wi
   } finally {
     await context.close();
   }
-  const sitemap = await request.get("/sitemap.xml");
+  const sitemap = await request.get("./sitemap.xml");
   expect(sitemap.ok()).toBe(true);
   expect(await sitemap.text()).toContain(`<loc>${canonical}</loc>`);
 });

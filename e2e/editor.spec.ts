@@ -35,7 +35,7 @@ for (const offline of [false, true]) {
     });
     if (offline) await context.setOffline(true);
     await page.goto(
-      offline ? pathToFileURL(resolve("release/warhammer-save-patcher.html")).href : "/",
+      offline ? pathToFileURL(resolve("release/warhammer-save-patcher.html")).href : "./",
     );
     await expect(page.getByRole("button", { name: "Create patched copy" })).toBeDisabled();
     const source = fixture();
@@ -67,7 +67,7 @@ for (const offline of [false, true]) {
 }
 
 test("wrong files, amount errors, unknown versions, and recovery", async ({ page }) => {
-  await page.goto("/");
+  await page.goto("./");
   const file = page.getByRole("button", { name: "Choose save", exact: true });
   await file.setInputFiles({
     name: "wrong-image.png",
@@ -104,7 +104,7 @@ test("wrong files, amount errors, unknown versions, and recovery", async ({ page
 });
 
 test("version consent cannot invalidate an in-flight patch", async ({ page }) => {
-  await page.goto("/");
+  await page.goto("./");
   await page.getByRole("button", { name: "Choose save", exact: true }).setInputFiles({
     name: "unknown.sav",
     mimeType: "application/octet-stream",
@@ -134,7 +134,7 @@ test("version consent cannot invalidate an in-flight patch", async ({ page }) =>
 });
 
 test("digest failure restores controls and allows retry", async ({ page }) => {
-  await page.goto("/");
+  await page.goto("./");
   await page.getByRole("button", { name: "Choose save", exact: true }).setInputFiles({
     name: "retry.sav",
     mimeType: "application/octet-stream",
@@ -183,7 +183,7 @@ test("disabled JavaScript explains the requirement and offers the Node tool", as
 for (const width of [320, 390, 768, 1440]) {
   test(`layout at ${width}px with long filename and text spacing`, async ({ page }) => {
     await page.setViewportSize({ width, height: 900 });
-    await page.goto("/");
+    await page.goto("./");
     await page.getByRole("button", { name: "Choose save", exact: true }).setInputFiles({
       name: "long".repeat(40) + ".sav",
       mimeType: "application/octet-stream",
