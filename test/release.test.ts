@@ -28,6 +28,7 @@ async function fixture(
     apiError: false,
     failUpload: false,
     corruptDownload: false,
+    lagDraftListing: false,
     release: null,
     run: {
       head_sha: head,
@@ -214,5 +215,19 @@ test("stale automatic source skips, while a manual stale run fails", options, as
     assert.equal(invoke("verified-main", "workflow_run").status, 0);
     assert.match(await readFile(join(directory, "output.txt"), "utf8"), /verified=false/);
     assert.equal(invoke("verified-main").status, 1);
+  });
+});
+
+test("release resolves a new draft even when the collection listing lags", options, async () => {
+  await fixture(async ({ state, save, invoke, read, directory }) => {
+    state.lagDraftListing = true;
+    await save();
+    const published = invoke();
+    assert.equal(published.status, 0, String(published.stderr));
+    assert.equal((await read()).release?.draft, false);
+    const calls = await readFile(join(directory, "calls.jsonl"), "utf8");
+    assert.match(calls, /"graphql"/);
+    assert.match(calls, /\/releases\/1"/);
+    assert.doesNotMatch(calls, /"--slurp"/);
   });
 });
