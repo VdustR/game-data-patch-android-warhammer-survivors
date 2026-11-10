@@ -166,11 +166,13 @@ test("digest failure restores controls and allows retry", async ({ page }) => {
 
 test("disabled JavaScript explains the requirement and offers the Node tool", async ({
   browser,
+  baseURL,
 }) => {
-  const context = await browser.newContext({ javaScriptEnabled: false });
+  if (!baseURL) throw new Error("Missing browser test base URL");
+  const context = await browser.newContext({ javaScriptEnabled: false, baseURL });
   try {
     const page = await context.newPage();
-    await page.goto(process.env["TEST_BASE_URL"] ?? "http://127.0.0.1:4173");
+    await page.goto("./");
     // Playwright's text engine excludes noscript; inspect its rendered descendants directly.
     await expect(page.locator("noscript p")).toBeVisible();
     await expect(page.locator("noscript p")).toContainText("Enable JavaScript");

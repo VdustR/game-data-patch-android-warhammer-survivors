@@ -1,6 +1,7 @@
 import { defineConfig } from "@playwright/test";
 
-const baseUrl = process.env["TEST_BASE_URL"] ?? "http://127.0.0.1:4173";
+const previewPath = "/game-data-patch-android-warhammer-survivors/";
+const baseUrl = process.env["TEST_BASE_URL"] ?? `http://127.0.0.1:4173${previewPath}`;
 export default defineConfig({
   testDir: "./e2e",
   timeout: 30_000,
@@ -17,7 +18,7 @@ export default defineConfig({
   webServer: process.env["TEST_BASE_URL"]
     ? []
     : {
-        command: "pnpm preview --port 4173 --strictPort",
+        command: `pnpm preview --base ${previewPath} --port 4173 --strictPort`,
         url: baseUrl,
         reuseExistingServer: false,
       },
