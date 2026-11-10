@@ -5,15 +5,19 @@ const canonical = "https://vdustr.github.io/game-data-patch-android-warhammer-su
 test("initial HTML exposes the English tool, evidence, and discovery metadata without JavaScript", async ({
   browser,
   request,
+  baseURL,
 }) => {
-  const response = await request.get("/");
+  const response = await request.get("./");
   expect(response.ok()).toBe(true);
   const html = await response.text();
   expect(html).toContain('lang="en"');
-  const context = await browser.newContext({ javaScriptEnabled: false });
+  expect(html).toContain('id="compatibility"');
+  expect(html).toContain('id="save-privacy"');
+  if (!baseURL) throw new Error("Missing browser test base URL");
+  const context = await browser.newContext({ javaScriptEnabled: false, baseURL });
   try {
     const page = await context.newPage();
-    await page.goto(process.env["TEST_BASE_URL"] ?? "http://127.0.0.1:4173");
+    await page.goto("./");
     await expect(page.locator("h1")).toHaveCount(1);
     await expect(page.locator("h1")).toContainText("Warhammer Survivors");
     await expect(page.locator("#compatibility")).toContainText("178089");
@@ -33,7 +37,7 @@ test("initial HTML exposes the English tool, evidence, and discovery metadata wi
   } finally {
     await context.close();
   }
-  const sitemap = await request.get("/sitemap.xml");
+  const sitemap = await request.get("./sitemap.xml");
   expect(sitemap.ok()).toBe(true);
   expect(await sitemap.text()).toContain(`<loc>${canonical}</loc>`);
 });
