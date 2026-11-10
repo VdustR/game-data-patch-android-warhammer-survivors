@@ -1,0 +1,14 @@
+node_modules/
+dist/
+release/
+*.sav
+*.apk
+*.so
+*.tsbuildinfo
+.env*
+!.env.example
+.impeccable/review/
+.impeccable/mocks/
+playwright-report/
+test-results/
+.DS_Store
