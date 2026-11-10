@@ -44,7 +44,7 @@
     "vite-plus": "1.5.1"
   },
   "lint-staged": {
-    "*.{ts,css,json,md,yml,yaml,html}": "vp fmt",
+    "!(CHANGELOG).{ts,css,json,md,yml,yaml,html}": "vp fmt",
     "*.svelte": "prettier --write"
   },
   "engines": {
