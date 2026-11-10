@@ -27,7 +27,7 @@ jobs:
         env:
           VERIFIED_SHA: ${{ github.event.workflow_run.head_sha }}
         run: test "$(git rev-parse HEAD)" = "$VERIFIED_SHA"
-      - uses: jdx/mise-action@v3
+      - uses: jdx/mise-action@v5.2.7
         with:
           version: 2026.11.4
       - run: pnpm install --frozen-lockfile --ignore-scripts
