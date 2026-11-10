@@ -1,20 +1,29 @@
 <!doctype html>
-<html lang="zh-Hant">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#10171c" />
     <meta
       name="description"
-      content="在瀏覽器本機修改 Warhammer Survivors Android 存檔的 40K 與 AoS 金額。保留原檔、檢查格式與校驗碼，下載修改副本。"
+      content="Edit Warhammer Survivors Android save coins for 40K and Age of Sigmar. Free, local processing with checksum checks. Keep your original and download a patched copy."
     />
     <meta
       http-equiv="Content-Security-Policy"
       content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self' data:; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'"
     />
+    <link
+      rel="canonical"
+      href="https://vdustr.github.io/game-data-patch-android-warhammer-survivors/"
+    />
     <meta property="og:type" content="website" />
-    <meta property="og:title" content="Warhammer Survivors · Android Save Patcher" />
-    <meta property="og:description" content="40K 與 AoS 金額修改。存檔留在你的裝置，原檔保留。" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:site_name" content="Warhammer Survivors Save Editor" />
+    <meta property="og:title" content="Warhammer Survivors Save Editor for Android" />
+    <meta
+      property="og:description"
+      content="Edit 40K and Age of Sigmar coins locally. Free save editor with checksum checks, original-file preservation, and an offline download."
+    />
     <meta
       property="og:url"
       content="https://vdustr.github.io/game-data-patch-android-warhammer-survivors/"
@@ -27,22 +36,42 @@
       property="og:image:alt"
       content="Pixel portraits of a blue-armored warrior and a gold-armored champion surrounding the Warhammer Survivors save patcher title."
     />
+    <meta property="og:image:width" content="1731" />
+    <meta property="og:image:height" content="908" />
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Warhammer Survivors Save Editor for Android" />
+    <meta
+      name="twitter:description"
+      content="Edit 40K and Age of Sigmar coins locally. Keep your original save and download a patched copy."
+    />
+    <meta
+      name="twitter:image"
+      content="https://vdustr.github.io/game-data-patch-android-warhammer-survivors/og-image.png"
+    />
+    <meta
+      name="twitter:image:alt"
+      content="Warhammer Survivors Android save patcher with pixel portraits from both worlds."
+    />
     <link rel="icon" type="image/png" href="./app-icon.png" />
-    <title>Warhammer Survivors · 存檔金額修改器</title>
+    <title>Warhammer Survivors Save Editor for Android | 40K &amp; AoS</title>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "Warhammer Survivors Save Editor",
+        "url": "https://vdustr.github.io/game-data-patch-android-warhammer-survivors/",
+        "description": "An unofficial, free tool to edit Warhammer Survivors Android save coin balances for Warhammer 40,000 and Age of Sigmar locally, with checksum validation and a separately downloaded copy.",
+        "applicationCategory": "UtilitiesApplication",
+        "inLanguage": "en",
+        "isAccessibleForFree": true,
+        "browserRequirements": "JavaScript and Web Crypto support",
+        "image": "https://vdustr.github.io/game-data-patch-android-warhammer-survivors/og-image.png",
+        "creator": { "@type": "Person", "name": "VdustR", "url": "https://github.com/VdustR" }
+      }
+    </script>
   </head>
   <body>
-    <noscript>
-      <main class="app-shell">
-        <h1>需要啟用 JavaScript</h1>
-        <p>網頁工具需要 JavaScript 才能在本機檢查與修改存檔。你也可以使用獨立 Node 腳本。</p>
-        <a
-          href="https://github.com/VdustR/game-data-patch-android-warhammer-survivors/releases/latest"
-          >下載 Node 腳本</a
-        >
-      </main>
-    </noscript>
-    <div id="app"></div>
+    <div id="app"><!--app-html--></div>
     <script type="module" src="/src/main.ts"></script>
   </body>
 </html>

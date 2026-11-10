@@ -36,7 +36,7 @@
     --gold: #d5b36c;
     --green: #c1df91;
     --error: #ffb7a9;
-    font-family: "PingFang TC", "Noto Sans TC", system-ui, sans-serif;
+    font-family: system-ui, sans-serif;
     font-size: 16px;
     line-height: 1.65;
     color: var(--ink);
@@ -185,7 +185,7 @@
   }
   .intro {
     display: grid;
-    grid-template-columns: 1fr 260px;
+    grid-template-columns: minmax(0, 1fr) 260px;
     gap: 64px;
     align-items: center;
     padding: 54px 10px 46px;
@@ -193,8 +193,9 @@
   h1 {
     font-size: clamp(34px, 4.3vw, 52px);
     font-weight: 800;
-    letter-spacing: 0.035em;
-    line-height: 1.35;
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+    text-wrap: balance;
   }
   h1 span {
     color: var(--gold);
@@ -485,6 +486,38 @@
     display: inline-block;
     margin-top: 9px;
   }
+  .no-script {
+    padding: 20px;
+    margin-bottom: 24px;
+    border: 1px solid #ab8a4d;
+    background: #37301f;
+    color: #f2d89d;
+  }
+  .guide {
+    border-top: 1px solid #39423e;
+    padding: 32px 10px 40px;
+  }
+  .guide h2 {
+    color: #e0cc9f;
+    font-size: 20px;
+    margin-bottom: 24px;
+  }
+  .guide dl {
+    margin: 0;
+    max-width: 72ch;
+  }
+  .guide dl > div + div {
+    margin-top: 24px;
+  }
+  .guide dt {
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+  .guide dd {
+    margin: 0;
+    color: #b9c1bc;
+    font-size: 14px;
+  }
   footer {
     border-top: 1px solid #39423e;
     padding: 22px 0 32px;
@@ -614,9 +647,6 @@
     .intro-copy > p {
       font-size: 14px;
     }
-    .desktop-break {
-      display: none;
-    }
     .art-caption {
       font-size: 5px;
     }
@@ -666,11 +696,11 @@
     .intro {
       gap: 18px;
       padding: 30px 0;
-      grid-template-columns: 1fr 94px;
+      grid-template-columns: minmax(0, 1fr) 72px;
       align-items: start;
     }
     h1 {
-      font-size: 30px;
+      font-size: clamp(24px, 7vw, 30px);
     }
     .intro-copy {
       display: contents;

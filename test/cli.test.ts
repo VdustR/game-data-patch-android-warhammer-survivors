@@ -63,7 +63,7 @@ test(
       );
       assert.equal(result.error, undefined);
       assert.equal(result.status, 1);
-      assert.match(result.stderr, /一般存檔/);
+      assert.match(result.stderr, /regular save/);
     } finally {
       await rm(folder, { recursive: true, force: true });
     }

@@ -33,14 +33,14 @@ async function main() {
   }
   const [input] = positionals;
   if (!input || positionals.length !== 1)
-    throw new Error("請提供一個存檔路徑；使用 --help 查看用法。");
+    throw new Error("Provide one save path. Use --help for usage.");
   // A FIFO must not wait for a writer before we can reject it as a non-file.
   const source = await open(input, constants.O_RDONLY | constants.O_NONBLOCK);
   let text: string;
   try {
     const info = await source.stat();
     if (!info.isFile() || info.size > MAX_FILE_BYTES)
-      throw new Error("請選擇不超過 5 MiB 的一般存檔檔案。");
+      throw new Error("Choose a regular save file no larger than 5 MiB.");
     // Enforce the cap on the handle too: the file can grow after stat().
     const bytes = Buffer.alloc(MAX_FILE_BYTES + 1);
     let length = 0;
@@ -54,16 +54,16 @@ async function main() {
     await source.close();
   }
   const info = await inspectSave(text);
-  for (const warning of info.warnings) console.error(`提醒：${warning}`);
+  for (const warning of info.warnings) console.error(`Warning: ${warning}`);
   if (values.inspect) {
     if (values["40k"] !== undefined || values.aos !== undefined || values.output !== undefined)
-      throw new Error("--inspect 只供檢查，不能同時指定修改或輸出。");
+      throw new Error("--inspect cannot be combined with patch or output options.");
     console.log(
       JSON.stringify(
         {
           ...info,
           verifiedBuild: VERIFIED,
-          note: "versionCode 為實機驗證紀錄，無法從此存檔判斷其 APK build。",
+          note: "versionCode is a device test record. This save cannot identify its APK build.",
         },
         null,
         2,
@@ -75,7 +75,8 @@ async function main() {
   if (values["40k"] !== undefined) targets.WH_40K = parseAmount(values["40k"]);
   if (values.aos !== undefined) targets.WH_AOS = parseAmount(values.aos);
   const output = resolve(values.output ?? join(dirname(input), outputName(basename(input))));
-  if (output === resolve(input)) throw new Error("不能覆寫原始存檔；請使用另一個輸出路徑。");
+  if (output === resolve(input))
+    throw new Error("Cannot overwrite the original save. Choose another output path.");
   const patched = await patchSave(text, targets, {
     allowUnverifiedVersion: values["allow-unverified-version"] ?? false,
   });
@@ -91,7 +92,7 @@ async function main() {
   }
   await target.close();
   console.log(
-    `已建立修改副本：${output}\n原始存檔保留。40K：${targets.WH_40K ?? info.balances.WH_40K}；AoS：${targets.WH_AOS ?? info.balances.WH_AOS}`,
+    `Created patched copy: ${output}\nOriginal save preserved. 40K: ${targets.WH_40K ?? info.balances.WH_40K}; AoS: ${targets.WH_AOS ?? info.balances.WH_AOS}`,
   );
 }
 
@@ -99,10 +100,10 @@ main().catch((error: unknown) => {
   const exists = error instanceof Error && "code" in error && error.code === "EEXIST";
   console.error(
     exists
-      ? "輸出檔已存在，未覆寫。請換檔名再試。"
+      ? "The output already exists and was not overwritten. Choose a different filename."
       : error instanceof Error
         ? error.message
-        : "處理失敗，沒有覆寫原始存檔。",
+        : "Processing failed. The original save was not overwritten.",
   );
   process.exitCode = 1;
 });

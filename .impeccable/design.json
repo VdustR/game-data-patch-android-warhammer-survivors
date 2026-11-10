@@ -275,11 +275,11 @@
     },
     "typographyMeta": {
       "display": {
-        "displayName": "Chinese display",
+        "displayName": "English display",
         "purpose": "Main heading using the native sans stack."
       },
       "body": {
-        "displayName": "Readable Chinese body",
+        "displayName": "Readable English body",
         "purpose": "Instructions, labels, and feedback."
       },
       "world-title": {
@@ -330,80 +330,80 @@
       "kind": "button",
       "refersTo": "button-primary",
       "description": "Primary action; disable until the save is valid and any required version consent is accepted.",
-      "html": "<button class=\"ds-primary\">產生修改副本 <span aria-hidden=\"true\">→</span></button>",
-      "css": ".ds-primary { font-family: \"PingFang TC\", \"Noto Sans TC\", system-ui, sans-serif; font-size: 16px; line-height: 1.65; cursor: pointer; background: var(--green, #c1df91); color: #192418; border: 2px solid #e1f4bb; border-radius: 0; min-width: 202px; padding: 13px 20px; font-weight: 700; transition: background 0.16s ease-out; } .ds-primary:hover:enabled { background: #dbefba; } .ds-primary:focus-visible { outline: 3px solid #f2d68d; outline-offset: 5px; } .ds-primary:disabled { opacity: 0.5; cursor: not-allowed; } @media (max-width: 560px) { .ds-primary { width: 100%; min-width: 0; } } @media (prefers-reduced-motion: reduce) { .ds-primary, .ds-preset, .ds-subtle, .ds-download { animation: none !important; transition: none !important; } }"
+      "html": "<button class=\"ds-primary\">Create patched copy <span aria-hidden=\"true\">→</span></button>",
+      "css": ".ds-primary { font-family: system-ui, sans-serif; font-size: 16px; line-height: 1.65; cursor: pointer; background: var(--green, #c1df91); color: #192418; border: 2px solid #e1f4bb; border-radius: 0; min-width: 202px; padding: 13px 20px; font-weight: 700; transition: background 0.16s ease-out; } .ds-primary:hover:enabled { background: #dbefba; } .ds-primary:focus-visible { outline: 3px solid #f2d68d; outline-offset: 5px; } .ds-primary:disabled { opacity: 0.5; cursor: not-allowed; } @media (max-width: 560px) { .ds-primary { width: 100%; min-width: 0; } } @media (prefers-reduced-motion: reduce) { .ds-primary, .ds-preset, .ds-subtle, .ds-download { animation: none !important; transition: none !important; } }"
     },
     {
       "name": "Amount preset",
       "kind": "button",
       "refersTo": "button-preset",
       "description": "Compact preset for assigning the same target to both worlds.",
-      "html": "<button class=\"ds-preset\" type=\"button\">100 萬</button>",
-      "css": ".ds-preset { font-family: \"PingFang TC\", \"Noto Sans TC\", system-ui, sans-serif; font-size: 16px; line-height: 1.65; cursor: pointer; border: 1px solid #7a836e; background: #263129; color: #eef3df; padding: 7px 15px; border-radius: 0; font-size: 13px; transition: background 0.16s ease-out; } .ds-preset:hover:enabled { background: #3b4c36; } .ds-preset:focus-visible { outline: 3px solid #f2d68d; outline-offset: 5px; } .ds-preset:disabled { opacity: 0.5; cursor: not-allowed; } @media (max-width: 560px) { .ds-preset { padding: 9px 16px; } } @media (prefers-reduced-motion: reduce) { .ds-primary, .ds-preset, .ds-subtle, .ds-download { animation: none !important; transition: none !important; } }"
+      "html": "<button class=\"ds-preset\" type=\"button\">1 million</button>",
+      "css": ".ds-preset { font-family: system-ui, sans-serif; font-size: 16px; line-height: 1.65; cursor: pointer; border: 1px solid #7a836e; background: #263129; color: #eef3df; padding: 7px 15px; border-radius: 0; font-size: 13px; transition: background 0.16s ease-out; } .ds-preset:hover:enabled { background: #3b4c36; } .ds-preset:focus-visible { outline: 3px solid #f2d68d; outline-offset: 5px; } .ds-preset:disabled { opacity: 0.5; cursor: not-allowed; } @media (max-width: 560px) { .ds-preset { padding: 9px 16px; } } @media (prefers-reduced-motion: reduce) { .ds-primary, .ds-preset, .ds-subtle, .ds-download { animation: none !important; transition: none !important; } }"
     },
     {
       "name": "Clear preset",
       "kind": "button",
       "refersTo": "button-subtle",
       "description": "Underlined clear action with the same keyboard and disabled behavior as presets.",
-      "html": "<button class=\"ds-subtle\" type=\"button\">清空</button>",
-      "css": ".ds-subtle { font-family: \"PingFang TC\", \"Noto Sans TC\", system-ui, sans-serif; font-size: 16px; line-height: 1.65; cursor: pointer; border: 1px solid #7a836e; background: #263129; color: #eef3df; padding: 7px 15px; border-radius: 0; font-size: 13px; transition: background 0.16s ease-out; background: transparent; border-color: transparent; color: #d4d5ca; text-decoration: underline; text-underline-offset: 4px; } .ds-subtle:hover:enabled { background: #3b4c36; } .ds-subtle:focus-visible { outline: 3px solid #f2d68d; outline-offset: 5px; } .ds-subtle:disabled { opacity: 0.5; cursor: not-allowed; } @media (max-width: 560px) { .ds-subtle { padding: 9px 16px; } } @media (prefers-reduced-motion: reduce) { .ds-primary, .ds-preset, .ds-subtle, .ds-download { animation: none !important; transition: none !important; } }"
+      "html": "<button class=\"ds-subtle\" type=\"button\">Clear</button>",
+      "css": ".ds-subtle { font-family: system-ui, sans-serif; font-size: 16px; line-height: 1.65; cursor: pointer; border: 1px solid #7a836e; background: #263129; color: #eef3df; padding: 7px 15px; border-radius: 0; font-size: 13px; transition: background 0.16s ease-out; background: transparent; border-color: transparent; color: #d4d5ca; text-decoration: underline; text-underline-offset: 4px; } .ds-subtle:hover:enabled { background: #3b4c36; } .ds-subtle:focus-visible { outline: 3px solid #f2d68d; outline-offset: 5px; } .ds-subtle:disabled { opacity: 0.5; cursor: not-allowed; } @media (max-width: 560px) { .ds-subtle { padding: 9px 16px; } } @media (prefers-reduced-motion: reduce) { .ds-primary, .ds-preset, .ds-subtle, .ds-download { animation: none !important; transition: none !important; } }"
     },
     {
       "name": "File selection",
       "kind": "input",
       "refersTo": "button-file",
       "description": "Visible brass label around a native file input; its focus outline covers the label.",
-      "html": "<label class=\"ds-file\">選擇 .sav 檔案<input type=\"file\" accept=\".sav,application/json\" aria-label=\"選擇存檔\" /></label>",
-      "css": ".ds-file { font-family: \"PingFang TC\", \"Noto Sans TC\", system-ui, sans-serif; font-size: 16px; line-height: 1.65; position: relative; display: inline-flex; align-items: center; justify-content: center; border: 1px solid #d2b981; background: #34362c; color: #f6e2b5; padding: 11px 20px; cursor: pointer; } .ds-file:hover { background: #4b4735; } .ds-file:focus-within { outline: 3px solid #f2d68d; outline-offset: 5px; } .ds-file input { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; } @media (max-width: 560px) { .ds-file { width: 100%; } }"
+      "html": "<label class=\"ds-file\">Choose .sav file<input type=\"file\" accept=\".sav,application/json\" aria-label=\"Choose save\" /></label>",
+      "css": ".ds-file { font-family: system-ui, sans-serif; font-size: 16px; line-height: 1.65; position: relative; display: inline-flex; align-items: center; justify-content: center; border: 1px solid #d2b981; background: #34362c; color: #f6e2b5; padding: 11px 20px; cursor: pointer; } .ds-file:hover { background: #4b4735; } .ds-file:focus-within { outline: 3px solid #f2d68d; outline-offset: 5px; } .ds-file input { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; } @media (max-width: 560px) { .ds-file { width: 100%; } }"
     },
     {
       "name": "Amount field",
       "kind": "input",
       "refersTo": "input-amount",
       "description": "Monospaced numeric target with an associated label; aria-invalid applies the coral error border.",
-      "html": "<label class=\"ds-amount-label\" for=\"ds-amount\">40K 金額 <span>留空即保留</span></label><input class=\"ds-amount\" id=\"ds-amount\" inputmode=\"numeric\" autocomplete=\"off\" placeholder=\"輸入新金額\" aria-describedby=\"ds-amount-help\" /><p class=\"ds-amount-help\" id=\"ds-amount-help\">可設 0～1,000,000,000。</p>",
-      "css": ".ds-amount-label { font-family: \"PingFang TC\", \"Noto Sans TC\", system-ui, sans-serif; font-size: 16px; line-height: 1.65; display: flex; justify-content: space-between; gap: 8px; margin-bottom: 8px; font-size: 14px; color: var(--ink, #f3ead7); } .ds-amount-label span { color: #c1c6be; font-size: 12px; } .ds-amount { width: 100%; min-width: 0; border: 1px solid #6e7c7e; border-bottom: 3px solid #6e7c7e; border-radius: 0; background: #0d171e; color: #fff1d1; padding: 12px 14px; font: 600 20px/1.5 ui-monospace, monospace; font-variant-numeric: tabular-nums; caret-color: var(--gold, #d5b36c); } .ds-amount::placeholder { color: #aeb8bb; font: 400 16px/1.5 system-ui, sans-serif; } .ds-amount:focus-visible { outline: 3px solid #f2d68d; outline-offset: 5px; } .ds-amount[aria-invalid=\"true\"] { border-color: var(--error, #ffb7a9); } .ds-amount:disabled { cursor: not-allowed; } .ds-amount-help { font-family: \"PingFang TC\", \"Noto Sans TC\", system-ui, sans-serif; font-size: 16px; line-height: 1.65; color: #b9c1bc; font-size: 12px; margin-top: 14px; }"
+      "html": "<label class=\"ds-amount-label\" for=\"ds-amount\">40K coins <span>Blank keeps current</span></label><input class=\"ds-amount\" id=\"ds-amount\" inputmode=\"numeric\" autocomplete=\"off\" placeholder=\"Enter new amount\" aria-describedby=\"ds-amount-help\" /><p class=\"ds-amount-help\" id=\"ds-amount-help\">Set 0–1,000,000,000 coins.</p>",
+      "css": ".ds-amount-label { font-family: system-ui, sans-serif; font-size: 16px; line-height: 1.65; display: flex; justify-content: space-between; gap: 8px; margin-bottom: 8px; font-size: 14px; color: var(--ink, #f3ead7); } .ds-amount-label span { color: #c1c6be; font-size: 12px; } .ds-amount { width: 100%; min-width: 0; border: 1px solid #6e7c7e; border-bottom: 3px solid #6e7c7e; border-radius: 0; background: #0d171e; color: #fff1d1; padding: 12px 14px; font: 600 20px/1.5 ui-monospace, monospace; font-variant-numeric: tabular-nums; caret-color: var(--gold, #d5b36c); } .ds-amount::placeholder { color: #aeb8bb; font: 400 16px/1.5 system-ui, sans-serif; } .ds-amount:focus-visible { outline: 3px solid #f2d68d; outline-offset: 5px; } .ds-amount[aria-invalid=\"true\"] { border-color: var(--error, #ffb7a9); } .ds-amount:disabled { cursor: not-allowed; } .ds-amount-help { font-family: system-ui, sans-serif; font-size: 16px; line-height: 1.65; color: #b9c1bc; font-size: 12px; margin-top: 14px; }"
     },
     {
       "name": "40K world panel",
       "kind": "card",
       "refersTo": "world-future",
       "description": "Square world surface with a stepped coin and tabular current balance.",
-      "html": "<div class=\"ds-world\"><div class=\"ds-world-heading\"><span class=\"ds-coin\" aria-hidden=\"true\"></span><span>WARHAMMER 40,000</span></div><p class=\"ds-world-hint\">遙遠未來的戰備金庫</p><div class=\"ds-balance\"><span>目前金額</span><strong>1,000,000</strong></div></div>",
-      "css": ".ds-world { font-family: \"PingFang TC\", \"Noto Sans TC\", system-ui, sans-serif; font-size: 16px; line-height: 1.65; background: #192c38; border: 1px solid #4b6472; padding: 20px; min-width: 0; color: var(--ink, #f3ead7); } .ds-world-heading { display: flex; align-items: center; gap: 12px; color: #a8cee2; font: 9px/1.8 \"Press Start 2P\", monospace; } .ds-world-hint { color: #a8cee2; font-size: 12px; margin: 7px 0 20px; } .ds-balance { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; flex-wrap: wrap; border-top: 1px solid #586257; padding-top: 14px; margin-bottom: 20px; color: #d3d5cb; font-size: 13px; } .ds-balance strong { color: var(--ink, #f3ead7); font: 600 21px/1.4 ui-monospace, monospace; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; } .ds-coin { display: block; width: 15px; height: 18px; flex-shrink: 0; background: #d8ac40; border: 3px solid #f9d67a; border-right-color: #987024; clip-path: polygon(3px 0, 12px 0, 12px 3px, 15px 3px, 15px 15px, 12px 15px, 12px 18px, 3px 18px, 3px 15px, 0 15px, 0 3px, 3px 3px); } @media (max-width: 760px) { .ds-world { padding: 16px; } .ds-world-heading { font-size: 7px; } } @media (max-width: 560px) { .ds-world-heading { font-size: 9px; } .ds-world-hint { margin-bottom: 15px; } .ds-balance { margin-bottom: 16px; } }"
+      "html": "<div class=\"ds-world\"><div class=\"ds-world-heading\"><span class=\"ds-coin\" aria-hidden=\"true\"></span><span>WARHAMMER 40,000</span></div><p class=\"ds-world-hint\">Reserves for the far future</p><div class=\"ds-balance\"><span>Current balance</span><strong>1,000,000</strong></div></div>",
+      "css": ".ds-world { font-family: system-ui, sans-serif; font-size: 16px; line-height: 1.65; background: #192c38; border: 1px solid #4b6472; padding: 20px; min-width: 0; color: var(--ink, #f3ead7); } .ds-world-heading { display: flex; align-items: center; gap: 12px; color: #a8cee2; font: 9px/1.8 \"Press Start 2P\", monospace; } .ds-world-hint { color: #a8cee2; font-size: 12px; margin: 7px 0 20px; } .ds-balance { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; flex-wrap: wrap; border-top: 1px solid #586257; padding-top: 14px; margin-bottom: 20px; color: #d3d5cb; font-size: 13px; } .ds-balance strong { color: var(--ink, #f3ead7); font: 600 21px/1.4 ui-monospace, monospace; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; } .ds-coin { display: block; width: 15px; height: 18px; flex-shrink: 0; background: #d8ac40; border: 3px solid #f9d67a; border-right-color: #987024; clip-path: polygon(3px 0, 12px 0, 12px 3px, 15px 3px, 15px 15px, 12px 15px, 12px 18px, 3px 18px, 3px 15px, 0 15px, 0 3px, 3px 3px); } @media (max-width: 760px) { .ds-world { padding: 16px; } .ds-world-heading { font-size: 7px; } } @media (max-width: 560px) { .ds-world-heading { font-size: 9px; } .ds-world-hint { margin-bottom: 15px; } .ds-balance { margin-bottom: 16px; } }"
     },
     {
       "name": "AoS world panel",
       "kind": "card",
       "refersTo": "world-realms",
       "description": "Square world surface with a stepped coin and tabular current balance.",
-      "html": "<div class=\"ds-world\"><div class=\"ds-world-heading\"><span class=\"ds-coin\" aria-hidden=\"true\"></span><span>AGE OF SIGMAR</span></div><p class=\"ds-world-hint\">凡界諸域的遠征金庫</p><div class=\"ds-balance\"><span>目前金額</span><strong>1,000,000</strong></div></div>",
-      "css": ".ds-world { font-family: \"PingFang TC\", \"Noto Sans TC\", system-ui, sans-serif; font-size: 16px; line-height: 1.65; background: #302d20; border: 1px solid #726344; padding: 20px; min-width: 0; color: var(--ink, #f3ead7); } .ds-world-heading { display: flex; align-items: center; gap: 12px; color: #e0c786; font: 9px/1.8 \"Press Start 2P\", monospace; } .ds-world-hint { color: #e0c786; font-size: 12px; margin: 7px 0 20px; } .ds-balance { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; flex-wrap: wrap; border-top: 1px solid #586257; padding-top: 14px; margin-bottom: 20px; color: #d3d5cb; font-size: 13px; } .ds-balance strong { color: var(--ink, #f3ead7); font: 600 21px/1.4 ui-monospace, monospace; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; } .ds-coin { display: block; width: 15px; height: 18px; flex-shrink: 0; background: #d8ac40; border: 3px solid #f9d67a; border-right-color: #987024; clip-path: polygon(3px 0, 12px 0, 12px 3px, 15px 3px, 15px 15px, 12px 15px, 12px 18px, 3px 18px, 3px 15px, 0 15px, 0 3px, 3px 3px); } @media (max-width: 760px) { .ds-world { padding: 16px; } .ds-world-heading { font-size: 7px; } } @media (max-width: 560px) { .ds-world-heading { font-size: 9px; } .ds-world-hint { margin-bottom: 15px; } .ds-balance { margin-bottom: 16px; } }"
+      "html": "<div class=\"ds-world\"><div class=\"ds-world-heading\"><span class=\"ds-coin\" aria-hidden=\"true\"></span><span>AGE OF SIGMAR</span></div><p class=\"ds-world-hint\">Reserves for the Mortal Realms</p><div class=\"ds-balance\"><span>Current balance</span><strong>1,000,000</strong></div></div>",
+      "css": ".ds-world { font-family: system-ui, sans-serif; font-size: 16px; line-height: 1.65; background: #302d20; border: 1px solid #726344; padding: 20px; min-width: 0; color: var(--ink, #f3ead7); } .ds-world-heading { display: flex; align-items: center; gap: 12px; color: #e0c786; font: 9px/1.8 \"Press Start 2P\", monospace; } .ds-world-hint { color: #e0c786; font-size: 12px; margin: 7px 0 20px; } .ds-balance { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; flex-wrap: wrap; border-top: 1px solid #586257; padding-top: 14px; margin-bottom: 20px; color: #d3d5cb; font-size: 13px; } .ds-balance strong { color: var(--ink, #f3ead7); font: 600 21px/1.4 ui-monospace, monospace; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; } .ds-coin { display: block; width: 15px; height: 18px; flex-shrink: 0; background: #d8ac40; border: 3px solid #f9d67a; border-right-color: #987024; clip-path: polygon(3px 0, 12px 0, 12px 3px, 15px 3px, 15px 15px, 12px 15px, 12px 18px, 3px 18px, 3px 15px, 0 15px, 0 3px, 3px 3px); } @media (max-width: 760px) { .ds-world { padding: 16px; } .ds-world-heading { font-size: 7px; } } @media (max-width: 560px) { .ds-world-heading { font-size: 9px; } .ds-world-hint { margin-bottom: 15px; } .ds-balance { margin-bottom: 16px; } }"
     },
     {
       "name": "Prepared download",
       "kind": "custom",
       "refersTo": "download",
       "description": "A real named download link; the application moves focus here after rendering.",
-      "html": "<a class=\"ds-download\" href=\"data:application/octet-stream,\" download=\"SaveDataUnity.patched.sav\">下載 SaveDataUnity.patched.sav <span aria-hidden=\"true\">↓</span></a>",
-      "css": ".ds-download { font-family: \"PingFang TC\", \"Noto Sans TC\", system-ui, sans-serif; font-size: 16px; line-height: 1.65; display: flex; justify-content: space-between; align-items: center; gap: 16px; color: #e2f2cc; background: #2c402a; padding: 15px 18px; margin-top: 12px; border: 1px solid var(--green, #c1df91); overflow-wrap: anywhere; text-underline-offset: 5px; text-decoration-thickness: 1px; animation: ds-ready 0.35s ease-out; } .ds-download:hover { color: #fff0cb; } .ds-download:focus-visible { outline: 3px solid #f2d68d; outline-offset: 5px; } @keyframes ds-ready { from { background-color: #52643a; } to { background-color: #2c402a; } } @media (prefers-reduced-motion: reduce) { .ds-primary, .ds-preset, .ds-subtle, .ds-download { animation: none !important; transition: none !important; } }"
+      "html": "<a class=\"ds-download\" href=\"data:application/octet-stream,\" download=\"SaveDataUnity.patched.sav\">Download SaveDataUnity.patched.sav <span aria-hidden=\"true\">↓</span></a>",
+      "css": ".ds-download { font-family: system-ui, sans-serif; font-size: 16px; line-height: 1.65; display: flex; justify-content: space-between; align-items: center; gap: 16px; color: #e2f2cc; background: #2c402a; padding: 15px 18px; margin-top: 12px; border: 1px solid var(--green, #c1df91); overflow-wrap: anywhere; text-underline-offset: 5px; text-decoration-thickness: 1px; animation: ds-ready 0.35s ease-out; } .ds-download:hover { color: #fff0cb; } .ds-download:focus-visible { outline: 3px solid #f2d68d; outline-offset: 5px; } @keyframes ds-ready { from { background-color: #52643a; } to { background-color: #2c402a; } } @media (prefers-reduced-motion: reduce) { .ds-primary, .ds-preset, .ds-subtle, .ds-download { animation: none !important; transition: none !important; } }"
     },
     {
       "name": "Unverified version consent",
       "kind": "custom",
       "refersTo": "version-warning",
       "description": "Amber warning with a native checkbox; acknowledgment is required before generation.",
-      "html": "<div class=\"ds-warning\"><p>此版本尚未實機驗證。</p><label><input type=\"checkbox\" />我了解此版本尚未實機驗證，仍要產生副本</label></div>",
-      "css": ".ds-warning { font-family: \"PingFang TC\", \"Noto Sans TC\", system-ui, sans-serif; font-size: 16px; line-height: 1.65; border: 1px solid #ab8a4d; background: #37301f; padding: 16px; margin-top: 20px; color: #f2d89d; font-size: 14px; overflow-wrap: anywhere; } .ds-warning p { margin: 0; } .ds-warning label { display: flex; align-items: flex-start; gap: 10px; margin-top: 12px; } .ds-warning input { width: 20px; height: 20px; accent-color: var(--gold, #d5b36c); flex-shrink: 0; } .ds-warning input:focus-visible { outline: 3px solid #f2d68d; outline-offset: 5px; }"
+      "html": "<div class=\"ds-warning\"><p>This version has not been device-tested.</p><label><input type=\"checkbox\" />I understand this version has not been device-tested and want to create a copy.</label></div>",
+      "css": ".ds-warning { font-family: system-ui, sans-serif; font-size: 16px; line-height: 1.65; border: 1px solid #ab8a4d; background: #37301f; padding: 16px; margin-top: 20px; color: #f2d89d; font-size: 14px; overflow-wrap: anywhere; } .ds-warning p { margin: 0; } .ds-warning label { display: flex; align-items: flex-start; gap: 10px; margin-top: 12px; } .ds-warning input { width: 20px; height: 20px; accent-color: var(--gold, #d5b36c); flex-shrink: 0; } .ds-warning input:focus-visible { outline: 3px solid #f2d68d; outline-offset: 5px; }"
     },
     {
       "name": "Source navigation link",
       "kind": "nav",
       "refersTo": "source-link",
       "description": "Underlined source link beside the masthead brand.",
-      "html": "<a class=\"ds-source\" href=\"https://github.com/VdustR/game-data-patch-android-warhammer-survivors\" target=\"_blank\" rel=\"noreferrer\">原始碼 <span aria-hidden=\"true\">↗</span></a>",
-      "css": ".ds-source { font-family: \"PingFang TC\", \"Noto Sans TC\", system-ui, sans-serif; font-size: 16px; line-height: 1.65; color: var(--gold, #d5b36c); font-size: 14px; white-space: nowrap; text-underline-offset: 5px; text-decoration-thickness: 1px; } .ds-source:hover { color: #fff0cb; } .ds-source:focus-visible { outline: 3px solid #f2d68d; outline-offset: 5px; } @media (max-width: 560px) { .ds-source { font-size: 12px; } }"
+      "html": "<a class=\"ds-source\" href=\"https://github.com/VdustR/game-data-patch-android-warhammer-survivors\" target=\"_blank\" rel=\"noreferrer\">Source code <span aria-hidden=\"true\">↗</span></a>",
+      "css": ".ds-source { font-family: system-ui, sans-serif; font-size: 16px; line-height: 1.65; color: var(--gold, #d5b36c); font-size: 14px; white-space: nowrap; text-underline-offset: 5px; text-decoration-thickness: 1px; } .ds-source:hover { color: #fff0cb; } .ds-source:focus-visible { outline: 3px solid #f2d68d; outline-offset: 5px; } @media (max-width: 560px) { .ds-source { font-size: 12px; } }"
     }
   ],
   "narrative": {
@@ -412,7 +412,7 @@
     "keyCharacteristics": [
       "Original app-icon pixels and short English pixel labels",
       "Square material edges and flat tonal surfaces",
-      "Readable Chinese instructions and tabular amounts",
+      "Readable English instructions and tabular amounts",
       "Responsive stacking with visible focus and recovery"
     ],
     "rules": [
@@ -423,7 +423,7 @@
       },
       {
         "name": "The Readable Instructions Rule",
-        "body": "Use native sans for Chinese instructions and reserve Press Start 2P for short English labels and numbered steps.",
+        "body": "Use native sans for English instructions and reserve Press Start 2P for short English labels and numbered steps.",
         "section": "typography"
       },
       {
@@ -440,7 +440,7 @@
     "donts": [
       "Do not add decorative faction insignia.",
       "Do not add shadows, rounded cards, or form-obscuring overlays.",
-      "Do not use pixel lettering for long Chinese instructions.",
+      "Do not use pixel lettering for long English instructions.",
       "Do not add network-loaded design assets or imply that format checks verify a device build."
     ]
   }

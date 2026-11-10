@@ -46,25 +46,31 @@ export interface SaveInfo {
 }
 
 export function decodeSave(bytes: Uint8Array): string {
-  if (bytes.byteLength > MAX_FILE_BYTES) throw new Error("檔案超過 5 MiB，請確認選到遊戲存檔。");
+  if (bytes.byteLength > MAX_FILE_BYTES)
+    throw new Error("This file exceeds 5 MiB. Check that you selected a game save.");
   if (bytes[0] === 0xef && bytes[1] === 0xbb && bytes[2] === 0xbf) {
-    throw new Error("檔案含 UTF-8 BOM，與已驗證的存檔格式不同；請使用遊戲直接產生的檔案。");
+    throw new Error(
+      "The file has a UTF-8 BOM, unlike the verified save format. Use a file written directly by the game.",
+    );
   }
   try {
     return new TextDecoder("utf-8", { fatal: true }).decode(bytes);
   } catch {
-    throw new Error("檔案不是有效 UTF-8 文字，請選擇 SaveDataUnity.sav。");
+    throw new Error("The file is not valid UTF-8 text. Choose SaveDataUnity.sav.");
   }
 }
 
 function checkTree(node: Node, depth = 0): void {
-  if (depth > 64) throw new Error("JSON 巢狀層數異常，無法辨識為合理存檔。");
+  if (depth > 64) throw new Error("The JSON is nested too deeply to recognize as a save.");
   if (node.type === "object") {
     const seen = new Set<string>();
     for (const property of node.children ?? []) {
       const key: unknown = property.children?.[0]?.value;
-      if (typeof key !== "string") throw new Error("JSON 欄位名稱無效。");
-      if (seen.has(key)) throw new Error(`JSON 有重複欄位「${key.slice(0, 80)}」，無法安全修改。`);
+      if (typeof key !== "string") throw new Error("Invalid JSON field name.");
+      if (seen.has(key))
+        throw new Error(
+          `Duplicate JSON field “${key.slice(0, 80)}”. The file cannot be safely patched.`,
+        );
       seen.add(key);
     }
   }
@@ -73,17 +79,19 @@ function checkTree(node: Node, depth = 0): void {
 
 function readSave(text: string) {
   if (!text.trim() || new TextEncoder().encode(text).byteLength > MAX_FILE_BYTES) {
-    throw new Error("檔案為空或超過 5 MiB，請重新選擇遊戲存檔。");
+    throw new Error("The file is empty or exceeds 5 MiB. Choose a game save again.");
   }
   const errors: ParseError[] = [];
   let tree: Node | undefined;
   try {
     tree = parseTree(text, errors, { disallowComments: true, allowTrailingComma: false });
   } catch {
-    throw new Error("檔案結構異常，無法解析 JSON。");
+    throw new Error("The file structure could not be parsed as JSON.");
   }
   if (!tree || tree.type !== "object" || errors.length) {
-    throw new Error("檔案不是有效 JSON 物件；請選擇遊戲的 .sav 存檔，不能選 APK、圖片或壓縮檔。");
+    throw new Error(
+      "The file is not a valid JSON object. Choose a game .sav file, not an APK, image, or archive.",
+    );
   }
   checkTree(tree);
   const value: unknown = JSON.parse(text);
@@ -92,9 +100,12 @@ function readSave(text: string) {
     const issue = result.error.issues[0];
     const path = issue?.path.join(".") ?? "root";
     if (path === "Platform")
-      throw new Error("未找到 Android 平台標記；此工具只支援 Android 存檔。");
-    if (path === "checksum") throw new Error("缺少有效的 checksum 校驗碼，請使用完整原始存檔。");
-    throw new Error(`存檔缺少必要欄位或格式不符（${path}）；需要 40K、AoS 金額與目前世界資料。`);
+      throw new Error("No Android platform marker found. This tool supports Android saves only.");
+    if (path === "checksum")
+      throw new Error("Missing a valid checksum. Use the complete original save.");
+    throw new Error(
+      `Missing or invalid save field (${path}). Both world balances and the selected world are required.`,
+    );
   }
   // JSON key escapes or whitespace at this particular field change the game's regex behavior.
   const checksum = findNodeAtLocation(tree, ["checksum"]);
@@ -104,7 +115,9 @@ function readSave(text: string) {
     text.slice(property.offset, property.offset + property.length) !==
       `"checksum":"${result.data.checksum}"`
   ) {
-    throw new Error("checksum 欄位格式與遊戲格式不同，請使用未經重新排版的原始存檔。");
+    throw new Error(
+      "The checksum field formatting differs from the game format. Use the original save without reformatting it.",
+    );
   }
   return { tree, data: result.data };
 }
@@ -112,7 +125,7 @@ function readSave(text: string) {
 async function digest(text: string): Promise<string> {
   if (!globalThis.crypto?.subtle)
     throw new Error(
-      "瀏覽器無法使用 SHA-256；請以新版 Chrome 開啟離線網頁，或使用 localhost／HTTPS。",
+      "SHA-256 is unavailable. Open the offline HTML in a current Chrome browser, or use localhost or HTTPS.",
     );
   const bytes = new TextEncoder().encode(text.replace(/"checksum":"[a-z0-9]*"/g, '"checksum":""'));
   const hash = await globalThis.crypto.subtle.digest("SHA-256", bytes);
@@ -122,7 +135,9 @@ async function digest(text: string): Promise<string> {
 export async function inspectSave(text: string): Promise<SaveInfo> {
   const { data } = readSave(text);
   if ((await digest(text)) !== data.checksum) {
-    throw new Error("校驗碼不符：檔案可能被改過、損壞，或使用不同校驗格式。請改用原始存檔或備份。");
+    throw new Error(
+      "Checksum mismatch: the file may be edited, damaged, or use a different format. Use the original save or a backup.",
+    );
   }
   const verifiedVersion = data.SaveGameVersion === VERIFIED.gameVersion;
   return {
@@ -135,14 +150,14 @@ export async function inspectSave(text: string): Promise<SaveInfo> {
     warnings: verifiedVersion
       ? []
       : [
-          `檔案版本 ${data.SaveGameVersion} 尚未實機驗證。已驗證版本為 ${VERIFIED.gameVersion}；本檔通過基本結構與校驗碼檢查，仍不保證遊戲能讀取修改結果。`,
+          `Game version ${data.SaveGameVersion} has not been device-tested. The tested version is ${VERIFIED.gameVersion}. This file passed basic structure and checksum checks, but the game may not read the patched copy.`,
         ],
   };
 }
 
 function replaceValue(text: string, tree: Node, path: string[], value: string): string {
   const node = findNodeAtLocation(tree, path);
-  if (!node) throw new Error(`找不到必要欄位 ${path.join(".")}。`);
+  if (!node) throw new Error(`Required field not found: ${path.join(".")}.`);
   return text.slice(0, node.offset) + value + text.slice(node.offset + node.length);
 }
 
@@ -153,14 +168,14 @@ export async function patchSave(
 ): Promise<string> {
   const info = await inspectSave(text);
   if (!info.verifiedVersion && !options.allowUnverifiedVersion)
-    throw new Error("尚未驗證的遊戲版本；請先確認版本提醒再繼續。");
+    throw new Error("Unverified game version. Acknowledge the version warning before continuing.");
   const parsed = targetsSchema.safeParse(targets);
   if (!parsed.success)
     throw new Error(
-      `金額必須是 0 到 ${MAX_COINS.toLocaleString("en-US")} 的整數，且能以遊戲的單精度數值精確表示；只能指定 40K 或 AoS。`,
+      `Amounts must be integers from 0 to ${MAX_COINS.toLocaleString("en-US")} that the game can store exactly in single precision. Only 40K and AoS are supported.`,
     );
   if (parsed.data.WH_40K === undefined && parsed.data.WH_AOS === undefined)
-    throw new Error("請指定至少一個世界的金額。");
+    throw new Error("Specify a coin amount for at least one world.");
   let output = text;
   for (const universe of universeSchema.options) {
     const value = parsed.data[universe];
@@ -185,17 +200,18 @@ export async function patchSave(
   const checked = await inspectSave(output);
   for (const universe of universeSchema.options) {
     if (checked.balances[universe] !== (parsed.data[universe] ?? info.balances[universe]))
-      throw new Error("輸出驗證失敗，沒有產生修改檔。");
+      throw new Error("Output verification failed. No patched file was created.");
   }
   return output;
 }
 
 export function parseAmount(value: string): number {
-  if (!/^\d+$/.test(value)) throw new Error("金額請輸入整數數字，不含逗號、小數點或正負號。");
+  if (!/^\d+$/.test(value))
+    throw new Error("Enter a whole number without commas, decimal points, or signs.");
   const result = targetAmountSchema.safeParse(Number(value));
   if (!result.success)
     throw new Error(
-      `金額須介於 0 與 ${MAX_COINS.toLocaleString("en-US")}，且不能因單精度而四捨五入。大額可用 1,000,000,000。`,
+      `Enter an amount from 0 to ${MAX_COINS.toLocaleString("en-US")} that does not round in single precision. For a large amount, use 1,000,000,000.`,
     );
   return result.data;
 }

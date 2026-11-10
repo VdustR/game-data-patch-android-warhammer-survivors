@@ -1,6 +1,6 @@
 # Project instructions
 
-Use English for source, documentation, commits, and PR text. Product UI is Traditional Chinese (Taiwan).
+Use English for source, documentation, commits, and PR text. Product UI and user-facing errors are English.
 
 - Shared save behavior belongs in `src/core.ts`; browser and CLI must use it.
 - Preserve all unmodified bytes. Do not replace targeted edits with whole-file JSON serialization.

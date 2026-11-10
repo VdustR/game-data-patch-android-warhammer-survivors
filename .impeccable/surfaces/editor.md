@@ -6,7 +6,7 @@ Mode: Operate. The user explicitly delegated design choices and requested a stro
 
 **THESIS:** A practical save editor that feels like opening the game's two coin vaults. The file operation remains recognizable and reversible.
 
-**OWN-WORLD:** Dark iron/stone, square brass edges, blue 40K and ochre AoS panels, crisp original app-icon pixels. Use neutral material and coin motifs rather than decorative faction insignia. Pixel lettering belongs to short English labels; Chinese instructions stay readable.
+**OWN-WORLD:** Dark iron/stone, square brass edges, blue 40K and ochre AoS panels, crisp original app-icon pixels. Use neutral material and coin motifs rather than decorative faction insignia. Pixel lettering belongs to short English labels; English instructions stay readable.
 
 **STORY:** Identify the Android tool and local processing. Choose a file. See both actual balances. Set one or both targets. Generate and download a separately named copy. Read installation and verified-build limits nearby.
 
