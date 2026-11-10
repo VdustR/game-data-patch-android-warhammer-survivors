@@ -23,13 +23,14 @@ export default defineConfig({
   },
   build: { cssCodeSplit: false, assetsInlineLimit: 0 },
   test: { include: ["test/**/*.test.ts"] },
-  lint: { ignorePatterns: ["dist/**", "node_modules/**", "src/**/*.svelte"] },
+  lint: { ignorePatterns: ["dist/**", "node_modules/**", "src/**/*.svelte", "**/CHANGELOG.md"] },
   fmt: {
     ignorePatterns: [
       "dist/**",
       "node_modules/**",
       "src/**/*.svelte",
       "pnpm-lock.yaml",
+      "**/CHANGELOG.md",
       ".impeccable/review/**",
     ],
   },
